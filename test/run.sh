@@ -82,7 +82,7 @@ check "all suites pass" pass push \
   'grep -qx "passed-count=2" output' \
   'grep -qx "run-ids=run_suite_rome run_suite_cart" output' \
   'grep -qx "dashboard-url=https://manufact.com/cloud/acme/servers/11111111-1111-4111-8111-111111111111/evals/suites" output' \
-  'grep -q "^## Manufact Evals · Weather" summary' \
+  'grep -q "^## 🧪 Manufact Evals · Weather" summary' \
   'grep -q "^Production · 2 suites · ✅ 2 passed" summary' \
   '! grep -q "manufact-evals:" summary' \
   '[ ! -s gh ]' \
@@ -94,6 +94,9 @@ check "a failing suite fails the step and comments" fail pull_request \
   'grep -qx "failed-count=1" output' \
   'grep -q "::error title=Manufact evals::1 of 2 eval suites did not pass" stdout' \
   'grep -q "Missing tool call: checkout" stdout' \
+  'grep -q "🔗 https://.*/suite_cart?execution=exec_run_suite_cart&tab=report" stdout' \
+  '! grep -q "execution=undefined" stdout' \
+  'grep -q "<summary>Conversation</summary>" gh.body' \
   'grep -q "issues/7/comments -F body=@" gh' \
   'head -n 1 gh.body | grep -q "^<!-- manufact-evals:11111111-1111-4111-8111-111111111111:[0-9a-f]\{8\} -->$"' \
   'grep -qF "| [Checkout \\| cart](" gh.body'

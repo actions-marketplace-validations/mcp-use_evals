@@ -25,8 +25,9 @@ const suites = [
   ...suite,
 }));
 
-function execution(pass) {
+function execution(pass, runId) {
   return {
+    id: `exec_${runId}`,
     client: "inspector",
     modelName: "openai/gpt-5-mini",
     status: "complete",
@@ -38,6 +39,11 @@ function execution(pass) {
     toolAssertions: pass
       ? null
       : { checks: [{ kind: "required", name: "checkout", passed: false }] },
+    durationMs: pass ? 41_000 : 12_000,
+    toolCalls: pass
+      ? [{ tool: "get_weather", args: { city: "Rome" }, isError: false }]
+      : [],
+    agentResponse: pass ? "Rome is sunny, 22°C." : "I could not find a checkout tool.",
   };
 }
 
@@ -51,9 +57,11 @@ function run(id, suiteId) {
     status: "complete",
     pass,
     score: pass ? 100 : 0,
+    prompt: "Hi",
+    messages: ["Hi"],
     serverUrl: "https://weather.run.mcp-use.com/mcp",
     createdAt: "2026-11-18T00:00:00Z",
-    scenarios: [{ executions: [execution(pass)] }],
+    scenarios: [{ executions: [execution(pass, id)] }],
   };
 }
 

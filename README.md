@@ -126,7 +126,9 @@ https://manufact.com/cloud/<org>/servers/e3b0c442-98fc-4c14-9afb-f4c8996fb924/ov
 
 ## Pull request comment
 
-On `pull_request` events, the action comments the results on the pull request: a table of suites with their result and score, then a section per suite with a row per client and model. Suites that didn't pass start expanded and list why each execution failed: a missing or disallowed tool call, an error, or the judge's main problems. Each suite links to its page in the dashboard.
+On `pull_request` events, the action comments the results on the pull request: a table of suites with their result and score, then a section per suite with a row per client and model showing its score, duration and tool calls. Suites that didn't pass start expanded. Each failed execution lists why it failed (a missing or disallowed tool call, an error, or the judge's main problems), the judge's assessment, a link to its report in the dashboard, and a collapsed conversation: the user's messages, the tool calls and the final answer.
+
+While the suites run, the job log shows each suite's dashboard link, then a line as each client and model finishes, with why it failed and a link to its report.
 
 There's one comment per server and `suites` selection. Later runs update it rather than adding a new comment. If the suites can't run at all (for example, the token is wrong or a suite name doesn't match), the comment shows the error instead.
 
