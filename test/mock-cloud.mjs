@@ -81,6 +81,8 @@ const http = createServer((req, res) => {
   const base = `/api/v1/server-evals/${SERVER}`;
   if (req.method === "GET" && path === `${base}/suites`) return send(200, suites);
   let match = path.match(new RegExp(`^${base}/suites/([^/]+)/runs$`));
+  if (req.method === "POST" && match && scenario === "credits" && match[1] === "suite_cart")
+    return send(402, { error: "Out of eval credits", code: "INSUFFICIENT_CREDITS" });
   if (req.method === "POST" && match)
     return send(201, { id: `run_${match[1]}`, suiteId: match[1], status: "running", pass: null, score: null });
   match = path.match(new RegExp(`^${base}/runs/run_([^/]+)$`));

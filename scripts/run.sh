@@ -48,8 +48,8 @@ if [ "${#suites[@]}" -eq 0 ]; then args+=(--all); else args+=("${suites[@]}"); f
 # The readable report goes to the log; JSON and Markdown go to files.
 "${cli[@]}" "${args[@]}" 2> "$errors"
 code=$?
-# Drop the progress line; keep everything else the CLI said.
-grep -v -E '^Waiting for [0-9]+ eval runs?$' "$errors" > "$errors.clean"
+# Drop the progress line and npm's own notices; keep everything else the CLI said.
+grep -v -E '^(Waiting for [0-9]+ eval runs?|npm (notice|warn)( .*)?)$' "$errors" > "$errors.clean"
 mv "$errors.clean" "$errors"
 cat "$errors" >&2
 

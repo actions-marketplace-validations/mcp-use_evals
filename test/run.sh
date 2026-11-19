@@ -116,6 +116,12 @@ check "an unknown suite starts nothing" pass pull_request INPUT_SUITES=Nope \
   '! grep -q "POST" requests' \
   'grep -q "^## ❌ Manufact evals couldn.t run" gh.body'
 
+check "a failed start names the runs already going" credits pull_request \
+  '[ "$CODE" = 1 ]' \
+  'grep -q "::error title=Manufact evals::Could not start .*Checkout | cart.*: Out of eval credits" stdout' \
+  'grep -q "Already started, still running on Cloud: run_suite_rome (Rome weather)" gh.body' \
+  '! grep -q "^passed=" output'
+
 check "a bad token fails without runs" pass push MANUFACT_TOKEN=wrong \
   '[ "$CODE" = 1 ]' \
   'grep -q "::error title=Manufact evals::Unauthorized" stdout' \
