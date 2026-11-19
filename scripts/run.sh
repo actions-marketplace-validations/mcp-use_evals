@@ -99,7 +99,8 @@ else
     echo "::warning title=Manufact evals::$message"
     code=0
   else
-    error "$message See the report above."
+    [ "$pending" -gt 0 ] || message="$message See the report above."
+    error "$message"
     code=1
   fi
 fi
